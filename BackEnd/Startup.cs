@@ -1,4 +1,8 @@
-﻿using BackEnd.Infrastructure.Context;
+﻿using BackEnd.Domain.IRepositories;
+using BackEnd.Domain.IServices;
+using BackEnd.Persistence.Context;
+using BackEnd.Persistence.Repositories;
+using BackEnd.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -20,6 +24,9 @@ namespace BackEnd
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+
             //Registro de AutoMapper
             //services.AddAutoMapper(typeof(Startup));
 
@@ -32,6 +39,7 @@ namespace BackEnd
             //services.AddControllers().AddNewtonsoftJson().AddJsonOptions(opciones => opciones.JsonSerializerOptions.DefaultIgnoreCondition
             //                = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
+            services.AddControllers();
 
             //Configuración de Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
@@ -56,16 +64,14 @@ namespace BackEnd
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Configure the HTTP request pipeline.
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            if (env.IsDevelopment()){ }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("CorsRule");
-
 
             app.UseEndpoints(endpoints =>
             {

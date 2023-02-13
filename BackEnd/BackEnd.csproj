@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -16,11 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\DTOs\" />
-    <Folder Include="Core\Entities\" />
-    <Folder Include="Core\Interfaces\" />
+    <Folder Include="Domain\DTOs\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Infrastructure\Repositories\" />
   </ItemGroup>
 
 </Project>
