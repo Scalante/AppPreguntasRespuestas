@@ -24,8 +24,13 @@ namespace BackEnd
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            //Service
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<ILoginService, LoginService>();
+
+            //Repository
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ILoginRepository, LoginRepository>();
 
             //Registro de AutoMapper
             //services.AddAutoMapper(typeof(Startup));
