@@ -2,12 +2,15 @@
 using BackEnd.Domain.Models;
 using BackEnd.DTO;
 using BackEnd.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BackEnd.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/usuario")]
     [Produces("application/json")]
     public class UsuarioController : Controller
     {
@@ -38,22 +41,24 @@ namespace BackEnd.Controllers
             }
         }
 
-        [Route("CambiarPassword")]
+        [Route("cambiarpassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut]
         public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDTO cambiarPasswordDTO)
         {
             try
             {
-                int idUsuario = 10;
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                int idUsuario = JwtConfigurator.GetTokenIdUser(identity);
                 string passwordEncriptado = Encriptar.EncriptarPassword(cambiarPasswordDTO.PasswordAnterior);
                 var usuario = await _usuarioService.ValidatePassword(idUsuario, passwordEncriptado);
                 if (usuario == null)
                 {
-                    return BadRequest(new {message = "El password es incorrecto"});
+                    return BadRequest(new {message = "La contraseña es incorrecta"});
                 }
                 usuario.Password = Encriptar.EncriptarPassword(cambiarPasswordDTO.NuevaPassword);
                 await _usuarioService.UpdatePassword(usuario);
-                return Ok(new { message = "La password fue actualizada con éxito!" });
+                return Ok(new { message = "La contraseña fue actualizada con éxito!" });
             }
             catch (Exception ex)
             {

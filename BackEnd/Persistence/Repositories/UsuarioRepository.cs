@@ -7,13 +7,19 @@ namespace BackEnd.Persistence.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
+        #region Propiedades
         private readonly ApplicationDbContext _context;
+        #endregion
 
+        #region Constructor
         public UsuarioRepository(ApplicationDbContext context)
         {
             this._context = context;
         }
+        #endregion
 
+
+        #region Métodos
         public async Task SaveUser(Usuario usuario)
         {
             _context.Add(usuario);
@@ -22,13 +28,13 @@ namespace BackEnd.Persistence.Repositories
 
         public async Task<bool> ValidateExistence(Usuario usuario)
         {
-            var validateExistence = await _context.Usuarios.AnyAsync(x => x.NombreUsuario == usuario.NombreUsuario);
+            var validateExistence = await _context.Usuario.AnyAsync(x => x.NombreUsuario == usuario.NombreUsuario);
             return validateExistence;
         }
 
         public async Task<Usuario> ValidatePassword(int idUsuario, string passwordAnterior)
         {
-            var usuario = await _context.Usuarios.Where(x=>x.Id == idUsuario && x.Password == passwordAnterior).FirstOrDefaultAsync();
+            var usuario = await _context.Usuario.Where(x=>x.Id == idUsuario && x.Password == passwordAnterior).FirstOrDefaultAsync();
             return usuario;
         }
         public async Task UpdatePassword(Usuario usuario)
@@ -36,6 +42,6 @@ namespace BackEnd.Persistence.Repositories
             _context.Update(usuario);
             await _context.SaveChangesAsync();
         }
-
+        #endregion
     }
 }

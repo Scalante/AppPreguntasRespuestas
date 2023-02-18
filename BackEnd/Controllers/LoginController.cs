@@ -6,15 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackEnd.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/login")]
     [Produces("application/json")]
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _loginService;
+        private readonly IConfiguration _configuration;
 
-        public LoginController(ILoginService loginService)
+        public LoginController(ILoginService loginService, IConfiguration configuration)
         {
             this._loginService = loginService;
+            this._configuration = configuration;
         }
 
         [HttpPost]
@@ -29,7 +31,9 @@ namespace BackEnd.Controllers
                     return BadRequest(new { message = "Usuario o contraseña invalidos" });
                 }
 
-                return Ok(new { usuario = user.NombreUsuario });
+                string jwtToken = JwtConfigurator.GetToken(user, _configuration);
+
+                return Ok(new { token = jwtToken });
             }
             catch (Exception ex)
             {

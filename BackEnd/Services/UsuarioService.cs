@@ -6,13 +6,18 @@ namespace BackEnd.Services
 {
     public class UsuarioService : IUsuarioService
     {
+        #region Propiedades
         private readonly IUsuarioRepository _usuarioRepository;
+        #endregion
 
+        #region Constructor
         public UsuarioService(IUsuarioRepository usuarioRepository)
         {
             this._usuarioRepository = usuarioRepository;
         }
+        #endregion
 
+        #region Métodos
         public async Task SaveUser(Usuario usuario)
         {
             await _usuarioRepository.SaveUser(usuario);
@@ -31,5 +36,6 @@ namespace BackEnd.Services
         {
            await _usuarioRepository.UpdatePassword(usuario);
         }
+        #endregion
     }
 }

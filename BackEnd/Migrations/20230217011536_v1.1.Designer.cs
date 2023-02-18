@@ -4,6 +4,7 @@ using BackEnd.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230217011536_v1.1")]
+    partial class v11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,8 +48,7 @@ namespace BackEnd.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -64,8 +66,7 @@ namespace BackEnd.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CuestionarioId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -94,8 +95,7 @@ namespace BackEnd.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("PreguntaId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(2);
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -139,7 +139,7 @@ namespace BackEnd.Migrations
             modelBuilder.Entity("BackEnd.Domain.Models.Pregunta", b =>
                 {
                     b.HasOne("BackEnd.Domain.Models.Cuestionario", "Cuestionario")
-                        .WithMany("listPreguntas")
+                        .WithMany("Preguntas")
                         .HasForeignKey("CuestionarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -150,7 +150,7 @@ namespace BackEnd.Migrations
             modelBuilder.Entity("BackEnd.Domain.Models.Respuesta", b =>
                 {
                     b.HasOne("BackEnd.Domain.Models.Pregunta", "Pregunta")
-                        .WithMany("listRespuestas")
+                        .WithMany("Respuestas")
                         .HasForeignKey("PreguntaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -160,12 +160,12 @@ namespace BackEnd.Migrations
 
             modelBuilder.Entity("BackEnd.Domain.Models.Cuestionario", b =>
                 {
-                    b.Navigation("listPreguntas");
+                    b.Navigation("Preguntas");
                 });
 
             modelBuilder.Entity("BackEnd.Domain.Models.Pregunta", b =>
                 {
-                    b.Navigation("listRespuestas");
+                    b.Navigation("Respuestas");
                 });
 #pragma warning restore 612, 618
         }
